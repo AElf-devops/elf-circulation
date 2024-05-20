@@ -13,6 +13,7 @@
     "@midwayjs/view-nunjucks": "^3.16.1",
     "aelf-sdk": "^3.4.10",
     "bignumber.js": "^9.1.2",
+    "pm2": "^5.3.1",
     "web3": "^4.8.0"
   },
   "devDependencies": {
@@ -38,7 +39,8 @@
     "lint:fix": "mwts fix",
     "ci": "npm run cov",
     "build": "mwtsc --cleanOutDir",
-    "pm2": "NODE_ENV=production pm2 start ./bootstrap.js --name elf-circulation"
+    "pm2": "NODE_ENV=production pm2 start ./bootstrap.js --name elf-circulation",
+    "pm2d": "NODE_ENV=production pm2-runtime start ./bootstrap.js --name elf-circulation"
   },
   "repository": {
     "type": "git",
