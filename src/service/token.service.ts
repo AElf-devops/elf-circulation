@@ -10,10 +10,11 @@ import {
   elfTokenContractETH, TOKEN_SYMBOL,
   elfTokenContractBSC, getContracts, ORGANIZATION_ADDRESS_AELF
 } from '../web3/utils';
+import {ITokenInfo} from '../interface/token.interface';
 
 @Provide()
 export class TokenService {
-  async getTokenInfo(symbol?: string): Promise<any> {
+  async getTokenInfo(symbol?: string, cal = ''): Promise<any> {
     const decimalsOnAelf = 8;
     const contracts = await getContracts();
 
@@ -54,11 +55,7 @@ export class TokenService {
       .minus(organizationBalanceNotConvert).minus(organizationBalanceBridge)
       .minus(destroyEVMTotal);
 
-    return {
-      calculate: {
-        supply: calculateElfCirculatingSupply.toString(),
-        difference: calculateElfCirculatingSupply.minus(supplyOnAelfWithDecimal).toString(),
-      },
+    const output: ITokenInfo = {
       supply: {
         aelf: {
           aelf: getBalanceString(tokenInfoAelf.supply, decimalsOnAelf),
@@ -80,7 +77,16 @@ export class TokenService {
           notConvert: organizationBalanceNotConvert.toString(),
           toBridgeDapp: organizationBalanceBridge.toString(),
         }
-      },
+      }
+    };
+
+    if (cal) {
+      output.calculate = {
+        supply: calculateElfCirculatingSupply.toString(),
+        difference: calculateElfCirculatingSupply.minus(supplyOnAelfWithDecimal).toString(),
+      }
     }
+
+    return output;
   }
 }
